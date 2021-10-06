@@ -11,7 +11,7 @@ logging.basicConfig(level='INFO')
 logging.info('Logging now setup.')
 
 app = App(
-    token=os.environ.get("SLACK_BOT_TOKEN"),
+    token=os.environ.get("USER_OATH_TOKEN"),
     signing_secret=os.environ.get("SLACK_SIGNING_SECRET")
 )
 
