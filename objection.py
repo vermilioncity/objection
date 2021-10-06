@@ -11,7 +11,7 @@ logging.basicConfig(level='INFO')
 logging.info('Logging now setup.')
 
 app = App(
-    token=os.environ.get("USER_OATH_TOKEN"),
+    token=os.environ.get("SLACK_BOT_TOKEN"),
     signing_secret=os.environ.get("SLACK_SIGNING_SECRET")
 )
 
@@ -37,6 +37,12 @@ def _is_not_self(event):
     return event.get('bot_id') != 'B02GSLZ7TGA'
 
 
+def _is_objected(event):
+    text = event.get('text', '').lower()
+
+    return 'object' in text
+
+
 @app.event("message")
 def respond(client, event, logger):
 
@@ -45,7 +51,7 @@ def respond(client, event, logger):
         seed = random.choice(range(200))
         logger.info(f"Seed: {seed}")
 
-        if seed == 1:
+        if seed == 1 or _is_objected(event):
             try:
                 client.chat_postMessage(
                     text='',
@@ -56,7 +62,7 @@ def respond(client, event, logger):
                     {
                         "type": "image",
                         "image_url": "https://c.tenor.com/DP615vqUzeAAAAAC/ace-attorney-phoenix-wright.gif",
-                        "alt_text": "OBJECTION!"
+                        "alt_text": "OBJECTION!!"
                     }
                 ]
                 )
